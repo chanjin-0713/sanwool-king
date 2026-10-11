@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ===========================================================================
+   Sanwool King — 따뜻한 교회 톤 (아이보리 바탕 + 테라코타 포인트)
+   =========================================================================== */
+@theme {
+  --color-cream: #fbf7f1;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f5ede2;
+  --color-line: #e7dccb;
+  --color-line-soft: #f1e8da;
+
+  --color-ink: #2e2721;
+  --color-ink-soft: #6f6355;
+  --color-ink-faint: #9c8f80;
+
+  --color-brand: #b4663c;
+  --color-brand-dark: #8e4d2b;
+  --color-brand-soft: #f4e4d7;
+
+  --color-sage: #5f7f6b;
+  --color-sage-soft: #e7efe9;
+
+  --color-gold: #b08828;
+  --color-gold-soft: #f6eccf;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Segoe UI", "Apple SD Gothic Neo",
+    "Malgun Gothic", "Noto Sans KR", sans-serif;
+  --font-display: var(--font-cormorant), Georgia, "Times New Roman",
+    "Apple SD Gothic Neo", serif;
+
+  --radius-card: 1rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* OS 다크 모드에서도 의도한 따뜻한 톤이 유지되도록 고정합니다. */
+html {
+  color-scheme: light;
+  background-color: var(--color-cream);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--color-brand-soft);
+  color: var(--color-brand-dark);
+}
+
+/* 긴 본문에서 줄바꿈이 한국어 어절 단위로 끊기도록 */
+.text-ko {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* ---------------------------------------------------------------------------
+   반복되는 조합은 컴포넌트 클래스로 묶어 둡니다.
+   --------------------------------------------------------------------------- */
+@layer components {
+  .card {
+    @apply rounded-[var(--radius-card)] border border-line bg-surface;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand
+      px-5 py-2.5 text-sm font-semibold text-white transition-colors
+      hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border
+      border-line bg-surface px-5 py-2.5 text-sm font-semibold text-ink-soft
+      transition-colors hover:bg-surface-soft hover:text-ink
+      disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-full px-3
+      py-1.5 text-xs font-medium text-ink-faint transition-colors
+      hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed
+      disabled:opacity-60;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm
+      text-ink placeholder:text-ink-faint focus:border-brand focus:outline-none
+      focus:ring-2 focus:ring-brand/20;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-ink;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs
+      font-semibold;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-brand;
+  }
+}
+
+/* 라이트박스가 열려 있을 때 배경 스크롤 방지 */
+body[data-lightbox-open="true"] {
+  overflow: hidden;
 }
